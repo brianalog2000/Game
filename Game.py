@@ -80,6 +80,7 @@ def game():
 #            crate_x=700
             bee_x = random.randint(700,820)
             bee_speed = random.randint(2,4)
+            score_value+=1
         if crate_x<-50:
             crate_x = random.randint(700,820)
 #        point = c_rect.collidepoint(0, 330)
