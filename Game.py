@@ -38,10 +38,13 @@ def game():
     jump_count = 0
     jump =0
     jumpsound = pygame.mixer.Sound('assets\jump.mp3')
-    crate = pygame.image.load('assets\\bee.png')
+    bee = pygame.image.load('assets\\bee.png')
+    bee = pygame.transform.rotozoom(bee,0,0.3)
+    crate = pygame.image.load('assets\crate.png')
     crate = pygame.transform.rotozoom(crate,0,0.3)
     crate_x= 700
-    crate_speed=2
+    bee_speed=2
+    bee_x= 700
     score_value = 0
 
 
@@ -56,6 +59,7 @@ def game():
         keypressed = pygame.key.get_pressed()
         if keypressed[pygame.K_RIGHT]:
             bgx = bgx - 1
+            crate_x= crate_x -1
         if keypressed[pygame.K_LEFT]:
             bgx = bgx + 1
 
@@ -68,19 +72,22 @@ def game():
         if jump_count > 40:
             jump_count = 0
             jump = 0
-        c_rect=screen.blit(crate, (crate_x, 330))
+        b_rect=screen.blit(bee, (bee_x, 330))
+        c_rect=screen.blit(crate,(crate_x,330))
 #        crate_x= random.randint(300, 640)
-        crate_x -= crate_speed
-        if crate_x<-50:
+        bee_x -= bee_speed
+        if bee_x<-50:
 #            crate_x=700
+            bee_x = random.randint(700,820)
+            bee_speed = random.randint(2,4)
+        if crate_x<-50:
             crate_x = random.randint(700,820)
-            crate_speed = random.randint(2,4)
 #        point = c_rect.collidepoint(0, 330)
 #        if c_rect.topleft == (0,330):
 #            print(c_rect.topleft)
             score_value+=1
 
-        if c_rect.colliderect(p_rect):
+        if b_rect.colliderect(p_rect) or c_rect.colliderect(p_rect):
             return
 
 #         if event.type==pygame.K_SPACE:
