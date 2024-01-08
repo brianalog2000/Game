@@ -46,6 +46,7 @@ def game():
     bee_speed=2
     bee_x= 700
     score_value = 0
+    jump_limit=0
 
 
     while True:
@@ -62,16 +63,24 @@ def game():
             crate_x= crate_x -1
         if keypressed[pygame.K_LEFT]:
             bgx = bgx + 1
+            crate_x=crate_x +1
 
         p_rect=screen.blit(player, (50, player_y))
         if player_y < 280:
             player_y += gravity
-        if jump == 1:
+        if jump == 1 and jump_limit<3:
             player_y = player_y-4
-            jump_count += 1
+            jump_count+=1
+            print(jump_limit)
         if jump_count > 40:
             jump_count = 0
             jump = 0
+        if player_y==280: #When player reaches ground, it resets jump limit to allow jumps again.
+            jump_limit=0
+
+
+
+
         b_rect=screen.blit(bee, (bee_x, 330))
         c_rect=screen.blit(crate,(crate_x,330))
 #        crate_x= random.randint(300, 640)
@@ -83,17 +92,13 @@ def game():
             score_value+=1
         if crate_x<-50:
             crate_x = random.randint(700,820)
-#        point = c_rect.collidepoint(0, 330)
-#        if c_rect.topleft == (0,330):
-#            print(c_rect.topleft)
+
             score_value+=1
 
         if b_rect.colliderect(p_rect) or c_rect.colliderect(p_rect):
             return
 
-#         if event.type==pygame.K_SPACE:
-#            print(crate_x)
-#        score_value +=1
+
         text = font.render('Score: ' + str(score_value), True, 'white')
         screen.blit(text, (30,30))
 
@@ -119,7 +124,11 @@ def game():
                 if event.key==pygame.K_SPACE:
 #                    print("jump")
                     jump =1
+                    jump_limit+=1 # allows only double jump
                     pygame.mixer.Sound.play(jumpsound)
+
+
+
  #                   score_value+=1
 
 #            font = pygame.font.Font('freesansbold.tff', 30)
